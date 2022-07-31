@@ -1,0 +1,20 @@
+{
+    "name": "trulyao/php-jwt",
+    "description": "A simple JWT based authentication system in PHP",
+    "type": "project",
+    "require": {
+        "trulyao/php-router": "^1.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Trulyao\\PhpJwt\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ayodeji O.",
+            "email": "osasonaayodeji1@gmail.com"
+        }
+    ]
+}

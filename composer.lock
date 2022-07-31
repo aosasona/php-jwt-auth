@@ -1,0 +1,67 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "38ac8aebd1fef833412c3812480fd68e",
+    "packages": [
+        {
+            "name": "trulyao/php-router",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aosasona/php-router.git",
+                "reference": "c4e5e9dd2fcb4120323ce6119d9aa2ba0100914f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aosasona/php-router/zipball/c4e5e9dd2fcb4120323ce6119d9aa2ba0100914f",
+                "reference": "c4e5e9dd2fcb4120323ce6119d9aa2ba0100914f",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Trulyao\\PhpRouter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ayodeji O",
+                    "email": "osasonaayodeji1@gmail.com"
+                }
+            ],
+            "description": "A simple express-style router for PHP",
+            "homepage": "https://github.com/aosasona/php-router",
+            "keywords": [
+                "api",
+                "express",
+                "php",
+                "router"
+            ],
+            "support": {
+                "issues": "https://github.com/aosasona/php-router/issues",
+                "source": "https://github.com/aosasona/php-router/tree/v1.0.2"
+            },
+            "time": "2022-07-30T19:10:59+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}
