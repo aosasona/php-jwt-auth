@@ -7,6 +7,8 @@ require("vendor/autoload.php");
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
+require_once("src/services/Connection.php");
+
 if(strtolower(php_sapi_name()) !== "cli") {
     die("This script can only be run from the command line");
 }
@@ -28,34 +30,21 @@ switch ($main_arg) {
 function migrate_dev() {
     try {
         echo "Migrating database...\n";
-        $dsn = "postgres://{$_ENV['POSTGRES_USER']}:{$_ENV['POSTGRES_PASSWORD']}@{$_ENV['POSTGRES_HOST']}:{$_ENV['POSTGRES_PORT']}/{$_ENV['POSTGRES_DATABASE']}";
-        $pdo = new PDO($dsn);
-        $pdo->setAttribute(
-            PDO::ATTR_ERRMODE,
-            PDO::ERRMODE_EXCEPTION
-        );
-        $pdo->setAttribute(
-            PDO::ATTR_EMULATE_PREPARES,
-            false
-        );
-        $pdo->setAttribute(
-            PDO::ATTR_DEFAULT_FETCH_MODE,
-            PDO::FETCH_OBJ
-        );
 
-        $pdo->exec("DROP SCHEMA public CASCADE;");
-        $pdo->exec("CREATE SCHEMA public;");
-        $pdo->exec("GRANT ALL ON SCHEMA public TO postgres;");
-        $pdo->exec("GRANT ALL ON SCHEMA public TO public;");
+        $connection = new Connection();
+        $pdo = $connection->getPDO();
+
+        $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$_ENV['MYSQL_DATABASE']}`");
 
         $sql = `
-        CREATE TABLE public.users (
-            id SERIAL PRIMARY KEY,
-            username VARCHAR(255) NOT NULL,
+        CREATE TABLE IF NOT EXISTS users (
+            id INT NOT NULL AUTO_INCREMENT,
+            name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
             password VARCHAR(255) NOT NULL,
-            created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-            updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id)
         );
         `;
         $pdo->exec($sql);

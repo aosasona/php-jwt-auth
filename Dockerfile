@@ -8,9 +8,11 @@ COPY api.conf /etc/apache2/sites-available/api.conf
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pdo pdo_pgsql
-
-RUN composer install --no-dev
+RUN apt-get update && apt-get install -y libpq-dev  \
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql  \
+    && composer install --no-dev  \
+    && /usr/local/bin/docker-php-ext-enable pdo_mysql \
+    && /usr/local/bin/docker-php-ext-enable pdo_pgsql
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
     a2enmod rewrite && \

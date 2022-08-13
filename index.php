@@ -9,8 +9,8 @@ $dotenv->safeLoad();
 
 $router = new Router(__DIR__ . "/src", "v1");
 
-echo "Hello";
-
 $router->get("/", function($request, $response) {
-    return $response->send("Hello World");
+    return $response->send("Hello World!");
 });
+
+$router->serve();

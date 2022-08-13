@@ -2,7 +2,7 @@ version: '3'
 
 volumes:
   data:
-  postgres:
+  mysql:
     driver: local
 
 services:
@@ -12,24 +12,40 @@ services:
         dockerfile: Dockerfile
     ports:
         - "8085:80"
+    depends_on:
+      - mysql
     volumes:
-        - ./data:/data
-    environment:
-        - POSTGRES_DATABASE=api
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
+        - ./:/var/www/html # Mount the current directory to /var/www/html for dev purposes
+#        - data:data # Mount the data volume to /var/www/html/data for prod purposes
+    env_file:
+      - ./.env
     restart: always
 
-  db:
-    image: postgres:alpine
-    container_name: api-db
-    restart: unless-stopped
-    hostname: postgres
+
+  mysql:
+    container_name: mysql
+    image: mysql/mysql-server:latest-aarch64
     ports:
-      - "19200:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=api
+        - "3307:3306" # port 3307 is already in use on my PC
     volumes:
-      - postgres:/var/lib/postgresql/data
+        - mysql:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "api"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "root"
+    tty: true
+    stdin_open: true
+
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: arm64v8/phpmyadmin
+    ports:
+        - "2083:80"
+    restart: always
+    environment:
+        PMA_HOST: mysql
+    depends_on:
+        - mysql
