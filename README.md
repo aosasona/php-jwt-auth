@@ -1,6 +1,6 @@
 # PHP Starter
 
-This is a PHP starter project. It allows you to set up a dockerized PHP project loaded with the bare minimum you need fast. It also includes a good routing package suitable for APIs and static sites; the `.htaccess` file has been written to match this.
+This is a PHP starter project. It allows you to set up a dockerized PHP project loaded with the bare minimum you need fast. It also includes a good routing package suitable for APIs and static sites; the `.htaccess` file has been written to match this. Just fork this repository and start coding!
 
 ## Requirements
 - PHP 7.1+
@@ -31,3 +31,8 @@ $ php cli.php migrate:fresh
 > **Note**: This will ONLY work in the CLI.
 
 You can also edit the `api.conf` file to change your Apache configuration. The installed router depends on your `.htaccess` file, be careful with that.
+
+## Access
+- Web (API or Application): `http://localhost:8085`
+- PHPMyAdmin: `http://localhost:8085/v1/phpmyadmin` or directly `http://localhost:2083/`
+- MySQL is on port 3307 outside the container and can be accessed directly using TablePlus, MySQL WorkBench etc

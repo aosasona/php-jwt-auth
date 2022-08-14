@@ -29,15 +29,16 @@ switch ($main_arg) {
  */
 function migrate_dev() {
     try {
-        echo "Migrating database...\n";
-
         $connection = new Connection();
         $pdo = $connection->getPDO();
 
+
+        echo "Migrating database...\n";
+
+
         $pdo->exec("CREATE DATABASE IF NOT EXISTS `{$_ENV['MYSQL_DATABASE']}`");
 
-        $sql = `
-        CREATE TABLE IF NOT EXISTS users (
+        $users_query = "CREATE TABLE IF NOT EXISTS `users` (
             id INT NOT NULL AUTO_INCREMENT,
             name VARCHAR(255) NOT NULL,
             email VARCHAR(255) NOT NULL,
@@ -45,9 +46,25 @@ function migrate_dev() {
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (id)
-        );
-        `;
-        $pdo->exec($sql);
+        );";
+        $notes_query = "CREATE TABLE IF NOT EXISTS `notes` (
+            id INT NOT NULL AUTO_INCREMENT,
+            user_id INT NOT NULL,
+            title VARCHAR(255) NOT NULL,
+            content TEXT NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        );";
+
+
+        $queries = [$users_query, $notes_query];
+
+        foreach ($queries as $query) {
+            $pdo->exec($query);
+        }
+
         echo "Migration complete\n";
 
     } catch (PDOException $e) {

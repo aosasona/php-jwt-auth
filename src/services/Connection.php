@@ -2,6 +2,7 @@
 
 class Connection {
     private $pdo;
+    private $dsn;
 
     public function __construct() {
         [$host, $port, $user, $pass, $db] = [
@@ -11,17 +12,22 @@ class Connection {
             $_ENV['MYSQL_PASS'],
             $_ENV['MYSQL_DATABASE']
         ];
-        $dsn = "mysql:host={$host};port={$port};dbname={$db}";
+        $this->dsn = "mysql:host={$host};port={$port};dbname={$db}";
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
             PDO::ATTR_EMULATE_PREPARES => false,
         ];
-        $this->pdo = new PDO($dsn, $user, $pass, $options);
+        $this->pdo = new PDO($this->dsn, $user, $pass, $options);
     }
 
     public function getPDO(): PDO
     {
         return $this->pdo;
+    }
+
+    public function getDSN(): string
+    {
+        return $this->dsn;
     }
 }

@@ -26,7 +26,7 @@ services:
     container_name: mysql
     image: mysql/mysql-server:latest-aarch64
     ports:
-        - "3307:3306" # port 3307 is already in use on my PC
+        - "3307:3306"
     volumes:
         - mysql:/var/lib/mysql
     restart: always
