@@ -28,7 +28,7 @@ To create your own migrations, add it to the `cli.php` file and use the followin
 $ php cli.php migrate:fresh
 ```
 
-> **Note**: This will ONLY work in the CLI.
+**Note**: This will ONLY work in the CLI.
 
 You can also edit the `api.conf` file to change your Apache configuration. The installed router depends on your `.htaccess` file, be careful with that.
 

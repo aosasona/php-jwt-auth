@@ -1,1 +1,1 @@
-docker compose up --force-recreate --build api --build phpmyadmin --build mysql # This is to make a fresh build
+docker compose up -d --force-recreate --build api --build phpmyadmin --build mysql # This is to make a fresh build

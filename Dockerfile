@@ -6,13 +6,16 @@ COPY . .
 
 COPY api.conf /etc/apache2/sites-available/api.conf
 
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
-RUN apt-get update && apt-get install -y libpq-dev  \
+
+RUN apt-get update && apt-get install -y libpq-dev \
+    && apt-get install -y git \
     && docker-php-ext-install pdo pdo_mysql pdo_pgsql  \
-    && composer install --no-dev  \
     && /usr/local/bin/docker-php-ext-enable pdo_mysql \
-    && /usr/local/bin/docker-php-ext-enable pdo_pgsql
+    && /usr/local/bin/docker-php-ext-enable pdo_pgsql \
+    && composer install --no-dev
+
 
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
     a2enmod rewrite && \

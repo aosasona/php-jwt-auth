@@ -7,7 +7,7 @@ require("vendor/autoload.php");
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
-require_once("src/services/Connection.php");
+require_once("src/Services/Connection.php");
 
 if(strtolower(php_sapi_name()) !== "cli") {
     die("This script can only be run from the command line");

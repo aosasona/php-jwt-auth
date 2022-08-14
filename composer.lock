@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ebf2c4401244d04d6915919ce1e07605",
+    "content-hash": "9b4862ae5caf65a98adcff0e21f6a5c5",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -455,16 +455,16 @@
         },
         {
             "name": "trulyao/php-router",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aosasona/php-router.git",
-                "reference": "c4e5e9dd2fcb4120323ce6119d9aa2ba0100914f"
+                "reference": "aa37705ad9052b806bcb02a2965c84b7f9ef483f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aosasona/php-router/zipball/c4e5e9dd2fcb4120323ce6119d9aa2ba0100914f",
-                "reference": "c4e5e9dd2fcb4120323ce6119d9aa2ba0100914f",
+                "url": "https://api.github.com/repos/aosasona/php-router/zipball/aa37705ad9052b806bcb02a2965c84b7f9ef483f",
+                "reference": "aa37705ad9052b806bcb02a2965c84b7f9ef483f",
                 "shasum": ""
             },
             "require": {
@@ -497,9 +497,9 @@
             ],
             "support": {
                 "issues": "https://github.com/aosasona/php-router/issues",
-                "source": "https://github.com/aosasona/php-router/tree/v1.0.2"
+                "source": "https://github.com/aosasona/php-router/tree/1.0.3"
             },
-            "time": "2022-07-30T19:10:59+00:00"
+            "time": "2022-08-14T02:37:59+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -588,7 +588,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "ext-pdo": "*"
+    },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
