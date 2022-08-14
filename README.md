@@ -1,6 +1,6 @@
 # PHP Starter
 
-This is a PHP starter project. It allows you to set up a dockerized PHP project loaded with the bare minimum you need fast. It also includes a good routing package suitable for APIs and static sites; the `.htaccess` file has been written to match this. Just fork this repository and start coding!
+This is a PHP starter project. It allows you to quickly set up a dockerized PHP project loaded with the bare minimum you need. It also includes a good routing package suitable for APIs and static sites; the `.htaccess` file has been written to match this. Just fork this repository and start coding!
 
 ## Requirements
 - PHP 7.1+
