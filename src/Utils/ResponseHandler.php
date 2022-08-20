@@ -9,7 +9,7 @@ use Trulyao\PhpRouter\HTTP\Response as Response;
 class ResponseHandler
 {
 
-    public static function success(Response $response, string $message, int $code = 200, array $data = []): Response
+    public static function success(Response $response, string $message, int $code = 200, array | null $data = null): Response
     {
         return $response->status($code)->send([
             "success" => true,
@@ -32,8 +32,8 @@ class ResponseHandler
 
         return $response->status($code)->send([
             "success" => false,
-            "data" => $data,
-            "message" => $message
+            "message" => $message,
+            "data" => $data
         ]);
     }
 }
