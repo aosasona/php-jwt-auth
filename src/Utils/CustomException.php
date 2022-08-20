@@ -2,7 +2,7 @@
 
 namespace Trulyao\PhpJwt\Utils;
 
-use \Exception;
+use Exception;
 
 class CustomException extends Exception
 {

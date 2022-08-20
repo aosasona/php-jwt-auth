@@ -2,8 +2,8 @@
 
 namespace Trulyao\PhpJwt\Utils;
 
-use \Exception;
-use \Trulyao\PhpJwt\Utils\CustomException as CustomException;
+use Exception;
+use Trulyao\PhpJwt\Utils\CustomException as CustomException;
 use Trulyao\PhpRouter\HTTP\Response as Response;
 
 class ResponseHandler

@@ -7,8 +7,8 @@ use PDOStatement;
 
 class Connection
 {
-    private $pdo;
-    private $dsn;
+    private PDO $pdo;
+    private string $dsn;
 
     public function __construct()
     {

@@ -1,11 +1,9 @@
-<?php
+<?php /** @noinspection PhpUnusedLocalVariableInspection */
 
 namespace Trulyao\PhpJwt\Services;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use PDO;
-use PDOStatement;
 use Exception;
 
 class AuthService {
@@ -31,7 +29,7 @@ class AuthService {
 
     public static function decodeToken(string $token): object | null
     {
-        try{
+        try {
             $key = $_ENV["JWT_SECRET"];
             return JWT::decode($token, new Key($key, 'HS256')) ?? null;
         } catch (Exception $e) {

@@ -3,18 +3,13 @@
 namespace Trulyao\PhpJwt\Controllers;
 
 use Exception;
-use PDO;
 use Trulyao\PhpJwt\Models\Note;
 use Trulyao\PhpJwt\Utils\CustomException;
 use Trulyao\PhpRouter\HTTP\Response as Response;
 use Trulyao\PhpRouter\HTTP\Request as Request;
 use Trulyao\PhpJwt\Utils\ResponseHandler as ResponseHandler;
-use Trulyao\PhpJwt\Services\Connection as Connection;
 
 class NoteController {
-
-    private PDO $conn;
-    private Connection $pdo;
 
     public static function createNote(Request $request, Response $response): Response
     {
@@ -49,7 +44,7 @@ class NoteController {
             $note = Note::findOne($note_id);
 
             if(!$note) {
-                throw new CustomException("Uhhh... this note doesn't exist", 404);
+                throw new CustomException("Uh... this note doesn't exist", 404);
             }
 
             if($note->user_id != $user_id) {
@@ -85,7 +80,7 @@ class NoteController {
             $user_id = $request->data["user"]->id;
             $note = Note::findOne($note_id);
             if(!$note) {
-                throw new CustomException("Uhhh... this note doesn't exist", 404);
+                throw new CustomException("Uh... this note doesn't exist", 404);
             }
             if($note->user_id != $user_id) {
                 throw new CustomException("You don't own this note chief!", 403);
@@ -96,7 +91,7 @@ class NoteController {
                 throw new CustomException("Something went wrong", 500);
             }
 
-            return ResponseHandler::success($response, "Note deleted!",200);
+            return ResponseHandler::success($response, "Note deleted!");
         } catch (CustomException|Exception $e) {
             return ResponseHandler::error($response, $e);
         }

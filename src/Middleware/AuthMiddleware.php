@@ -5,14 +5,13 @@ namespace Trulyao\PhpJwt\Middleware;
 use Exception;
 use Trulyao\PhpJwt\Models\User;
 use Trulyao\PhpJwt\Utils\CustomException as CustomException;
-use Trulyao\PhpJwt\Utils\ResponseHandler;
+use Trulyao\PhpJwt\Utils\ResponseHandler as ResponseHandler;
 use Trulyao\PhpRouter\HTTP\Response as Response;
 use Trulyao\PhpRouter\HTTP\Request as Request;
-use Trulyao\PhpJwt\Services\Connection as Connection;
 use Trulyao\PhpJwt\Services\AuthService as AuthService;
 
 class AuthMiddleware {
-    public static function authorizeUser(Request $request, Response $response){
+    public static function authorizeUser(Request $request, Response $response): null| Response {
         try {
             $headers = $request->headers();
             $auth_header = $headers["authorization"];
@@ -47,6 +46,7 @@ class AuthMiddleware {
 
             $request->append("user", $user);
 
+            return null;
         } catch (CustomException|Exception $e) {
             return ResponseHandler::error($response, $e);
         }

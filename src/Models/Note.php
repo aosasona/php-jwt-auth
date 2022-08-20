@@ -2,9 +2,6 @@
 
 namespace Trulyao\PhpJwt\Models;
 
-use Exception;
-use PDO;
-use PDOException;
 use stdClass;
 use Trulyao\PhpJwt\Utils\CustomException as CustomException;
 use Trulyao\PhpJwt\Services\Connection as Connection;

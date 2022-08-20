@@ -8,7 +8,6 @@ use Trulyao\PhpJwt\Utils\CustomException;
 use Trulyao\PhpJwt\Utils\ResponseHandler as ResponseHandler;
 use Trulyao\PhpRouter\HTTP\Response as Response;
 use Trulyao\PhpRouter\HTTP\Request as Request;
-use Trulyao\PhpJwt\Services\Connection as Connection;
 use Trulyao\PhpJwt\Services\AuthService as AuthService;
 
 class AuthController
