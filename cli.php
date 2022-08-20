@@ -2,9 +2,12 @@
 
 <?php
 
+use Dotenv\Dotenv as Dotenv;
+use Trulyao\PhpJwt\Services\Connection as Connection;
+
 require("vendor/autoload.php");
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
 require_once("src/Services/Connection.php");
@@ -27,7 +30,8 @@ switch ($main_arg) {
 /**
  * Make a fresh migration
  */
-function migrate_dev() {
+function migrate_dev(): void
+{
     try {
         $connection = new Connection();
         $pdo = $connection->getPDO();

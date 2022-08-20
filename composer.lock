@@ -455,16 +455,16 @@
         },
         {
             "name": "trulyao/php-router",
-            "version": "2.0.1",
+            "version": "2.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aosasona/php-router.git",
-                "reference": "3694d26feee9ebc4f372d873f7e4ee5f9f78babb"
+                "reference": "c84fdee83556da13f29cb074a620ce3fa4130798"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aosasona/php-router/zipball/3694d26feee9ebc4f372d873f7e4ee5f9f78babb",
-                "reference": "3694d26feee9ebc4f372d873f7e4ee5f9f78babb",
+                "url": "https://api.github.com/repos/aosasona/php-router/zipball/c84fdee83556da13f29cb074a620ce3fa4130798",
+                "reference": "c84fdee83556da13f29cb074a620ce3fa4130798",
                 "shasum": ""
             },
             "require": {
@@ -500,9 +500,9 @@
             ],
             "support": {
                 "issues": "https://github.com/aosasona/php-router/issues",
-                "source": "https://github.com/aosasona/php-router/tree/2.0.1"
+                "source": "https://github.com/aosasona/php-router/tree/2.0.4"
             },
-            "time": "2022-08-20T00:06:54+00:00"
+            "time": "2022-08-20T22:02:30+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

@@ -6,7 +6,7 @@ use \Exception;
 use \Trulyao\PhpJwt\Utils\CustomException as CustomException;
 use Trulyao\PhpRouter\HTTP\Response as Response;
 
-class HandleResponse
+class ResponseHandler
 {
 
     public static function success(Response $response, string $message, int $code = 200, array $data = []): Response

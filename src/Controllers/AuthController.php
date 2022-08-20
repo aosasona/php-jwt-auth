@@ -3,8 +3,9 @@
 namespace Trulyao\PhpJwt\Controllers;
 
 use Exception;
+use Trulyao\PhpJwt\Models\User;
 use Trulyao\PhpJwt\Utils\CustomException;
-use Trulyao\PhpJwt\Utils\HandleResponse;
+use Trulyao\PhpJwt\Utils\ResponseHandler as ResponseHandler;
 use Trulyao\PhpRouter\HTTP\Response as Response;
 use Trulyao\PhpRouter\HTTP\Request as Request;
 use Trulyao\PhpJwt\Services\Connection as Connection;
@@ -12,15 +13,6 @@ use Trulyao\PhpJwt\Services\AuthService as AuthService;
 
 class AuthController
 {
-
-    private $pdo;
-    private $conn;
-
-    public function __construct()
-    {
-        $this->pdo = new Connection();
-        $this->conn = $this->pdo->getPDO();
-    }
 
     public function createUser(Request $request, Response $response): Response
     {
@@ -57,17 +49,15 @@ class AuthController
 
             $password = password_hash($password, PASSWORD_DEFAULT);
 
-            $user = [
-                "name" => $full_name,
-                "email" => $email,
-                "password" => $password,
-            ];
+            $user = new User();
+            $user->name = $full_name;
+            $user->email = $email;
+            $user->password = $password;
+            $user->save();
 
-            $this->pdo->query_data("INSERT INTO `users` (name, email, password) VALUES (:name, :email, :password)", $user);
-
-            return HandleResponse::success($response, "User created successfully", 201);
+            return ResponseHandler::success($response, "User created successfully", 201);
         } catch (CustomException|Exception $e) {
-            return HandleResponse::error($response, $e);
+            return ResponseHandler::error($response, $e);
         }
     }
 
@@ -88,23 +78,24 @@ class AuthController
                 throw new CustomException("Invalid credentials!", 400);
             }
 
-            $user = $this->pdo->select_data("SELECT * FROM `users` WHERE email = :email", ["email" => $email])[0];
+            $user = User::findByEmail($email);
 
             if (!password_verify($password, $user->password)) {
                 throw new CustomException("Invalid credentials!", 400);
             }
 
-            $token = AuthService::generateToken($user->id, $this->getUrl());
+            $generatedJWT = AuthService::generateToken($user->id, $this->getUrl());
 
             $response_data = [
                 "email" => $user->email,
-                "access_token" => $token
+                "access_token" => $generatedJWT["token"],
+                "valid_for" => $generatedJWT["ttl"],
             ];
 
-            return HandleResponse::success($response, "Welcome back!", 200, $response_data);
+            return ResponseHandler::success($response, "Welcome back!", 200, $response_data);
 
         } catch (CustomException|Exception $e) {
-            return HandleResponse::error($response, $e);
+            return ResponseHandler::error($response, $e);
         }
 
     }
