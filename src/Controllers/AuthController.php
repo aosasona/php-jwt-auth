@@ -62,7 +62,7 @@ class AuthController
 
             $this->pdo->query_data("INSERT INTO `users` (name, email, password) VALUES (:name, :email, :password)", $user);
 
-            return $response->status(201)->send(["success" => true, "message" => "User created successfully"]);
+            return HandleResponse::success($response, "User created successfully", 201);
         } catch (CustomException $e) {
             return HandleResponse::error($response, $e);
         }

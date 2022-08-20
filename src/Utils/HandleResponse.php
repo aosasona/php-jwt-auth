@@ -9,17 +9,17 @@ use Trulyao\PhpRouter\HTTP\Response as Response;
 class HandleResponse
 {
 
-    public static function success(Response $response, string $message, array $data = [], int $code = 200): Response
+    public static function success(Response $response, string $message, int $code = 200, array $data = []): Response
     {
-        $response->status($code);
-        return $response->send([
+        return $response->status($code)->send([
             "status" => "success",
+            "code" => $code,
             "message" => $message,
             "data" => $data
         ]);
     }
 
-    public static function error(Response $response, CustomException | Exception $e)
+    public static function error(Response $response, CustomException | Exception $e): Response
     {
         $code = 500;
         $message = "An error occurred";
