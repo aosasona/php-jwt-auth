@@ -4,7 +4,6 @@ namespace Trulyao\PhpJwt\Controllers;
 
 use Exception;
 use Trulyao\PhpJwt\Utils\CustomException;
-use Trulyao\PhpJwt\Utils\HandleException;
 use Trulyao\PhpJwt\Utils\HandleResponse;
 use Trulyao\PhpRouter\HTTP\Response as Response;
 use Trulyao\PhpRouter\HTTP\Request as Request;
@@ -40,6 +39,10 @@ class AuthController
                 throw new CustomException("Full name is required!", 400);
             }
 
+            if(strlen($password) < 6) {
+                throw new CustomException("Password must be at least 6 characters long!", 400);
+            }
+
             if ($password !== $confirm_password) {
                 throw new CustomException("Passwords do not match", 400);
             }
@@ -49,7 +52,7 @@ class AuthController
             $check = $this->pdo->query_data("SELECT * FROM `users` WHERE email = :email", ["email" => $email])->rowCount();
 
             if ($check > 0) {
-                throw new CustomException("Email already exists", 400);
+                throw new CustomException("Account already exists", 400);
             }
 
             $password = password_hash($password, PASSWORD_DEFAULT);
@@ -63,7 +66,7 @@ class AuthController
             $this->pdo->query_data("INSERT INTO `users` (name, email, password) VALUES (:name, :email, :password)", $user);
 
             return HandleResponse::success($response, "User created successfully", 201);
-        } catch (CustomException $e) {
+        } catch (CustomException|Exception $e) {
             return HandleResponse::error($response, $e);
         }
     }
@@ -74,10 +77,7 @@ class AuthController
             extract($request->body());
 
             if (empty($email) || empty($password)) {
-                return $response->status(400)->send([
-                    "success" => false,
-                    "message" => "Please fill all fields"
-                ]);
+                throw new CustomException("Please fill all the fields", 400);
             }
 
             $email = strtolower($email);
@@ -85,43 +85,33 @@ class AuthController
             $check = $this->pdo->query_data("SELECT * FROM `users` WHERE email = :email", ["email" => $email])->rowCount();
 
             if ($check < 1) {
-                return $response->status(400)->send([
-                    "success" => false,
-                    "message" => "Invalid credentials"
-                ]);
+                throw new CustomException("Invalid credentials!", 400);
             }
 
             $user = $this->pdo->select_data("SELECT * FROM `users` WHERE email = :email", ["email" => $email])[0];
 
             if (!password_verify($password, $user->password)) {
-                return $response->status(400)->send([
-                    "success" => false,
-                    "message" => "Invalid credentials"
-                ]);
+                throw new CustomException("Invalid credentials!", 400);
             }
 
             $token = AuthService::generateToken($user->id, $this->getUrl());
 
-            return $response->status(200)->send([
-                "success" => true,
-                "message" => "User logged in successfully",
-                "data" => [
-                    "access_token" => $token
-                ]
-            ]);
+            $response_data = [
+                "email" => $user->email,
+                "access_token" => $token
+            ];
 
-        } catch (Exception $e) {
-            return $response->status(500)->send([
-                "success" => false,
-                "message" => "Server error!"
-            ]);
+            return HandleResponse::success($response, "Welcome back!", 200, $response_data);
+
+        } catch (CustomException|Exception $e) {
+            return HandleResponse::error($response, $e);
         }
 
     }
 
     protected function getUrl(): string
     {
-        return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+        return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
     }
 
 }

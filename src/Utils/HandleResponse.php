@@ -12,8 +12,7 @@ class HandleResponse
     public static function success(Response $response, string $message, int $code = 200, array $data = []): Response
     {
         return $response->status($code)->send([
-            "status" => "success",
-            "code" => $code,
+            "success" => true,
             "message" => $message,
             "data" => $data
         ]);
@@ -33,7 +32,6 @@ class HandleResponse
 
         return $response->status($code)->send([
             "success" => false,
-            "code" => $code,
             "data" => $data,
             "message" => $message
         ]);
