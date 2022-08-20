@@ -76,7 +76,7 @@ class AuthController
             $user = User::findByEmail($email);
 
             if (!$user) {
-                throw new CustomException("Account already exists", 400);
+                throw new CustomException("Invalid credentials!", 400);
             }
 
             if (!password_verify($password, $user->password)) {
