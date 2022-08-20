@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b4862ae5caf65a98adcff0e21f6a5c5",
+    "content-hash": "1266be410f5e1f9d37d6faafa1ed3907",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -455,21 +455,24 @@
         },
         {
             "name": "trulyao/php-router",
-            "version": "1.0.3",
+            "version": "2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aosasona/php-router.git",
-                "reference": "aa37705ad9052b806bcb02a2965c84b7f9ef483f"
+                "reference": "3694d26feee9ebc4f372d873f7e4ee5f9f78babb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aosasona/php-router/zipball/aa37705ad9052b806bcb02a2965c84b7f9ef483f",
-                "reference": "aa37705ad9052b806bcb02a2965c84b7f9ef483f",
+                "url": "https://api.github.com/repos/aosasona/php-router/zipball/3694d26feee9ebc4f372d873f7e4ee5f9f78babb",
+                "reference": "3694d26feee9ebc4f372d873f7e4ee5f9f78babb",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "php": ">=7.1"
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9"
             },
             "type": "library",
             "autoload": {
@@ -497,9 +500,9 @@
             ],
             "support": {
                 "issues": "https://github.com/aosasona/php-router/issues",
-                "source": "https://github.com/aosasona/php-router/tree/1.0.3"
+                "source": "https://github.com/aosasona/php-router/tree/2.0.1"
             },
-            "time": "2022-08-14T02:37:59+00:00"
+            "time": "2022-08-20T00:06:54+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

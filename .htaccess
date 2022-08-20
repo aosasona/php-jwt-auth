@@ -7,3 +7,4 @@ RewriteCond %{REQUEST_URI} !.*\.css$ [NC]
 RewriteCond %{REQUEST_URI} !.*\.gif$ [NC]
 RewriteCond %{REQUEST_URI} !.*\.js$ [NC]
 RewriteRule .* /index.php
+RewriteRule .* - [E=HTTP_CONTENT_TYPE:%{HTTP:Content-Type},L]
