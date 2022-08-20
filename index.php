@@ -12,15 +12,23 @@ use Trulyao\PhpJwt\Controllers\NoteController as NoteController;
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->safeLoad();
 
+$authMiddleware = [AuthMiddleware::class, "authorizeUser"];
+
 $router = new Router(__DIR__ . "/src", "v1");
 
-$router->allowed(["application/json", "application/x-www-form-urlencoded", "multipart/form-data", "multipart/form-data; boundary=X-INSOMNIA-BOUNDARY"]);
+$router->allowed(["application/json", "application/x-www-form-urlencoded", "multipart/form-data"]);
 
-$router->post("/auth/login", [new AuthController(), "loginUser"]);
+$router->post("/auth/login", [AuthController::class, "loginUser"]);
 
-$router->post("/auth/signup", [new AuthController(), "createUser"]);
+$router->post("/auth/signup", [AuthController::class, "createUser"]);
 
-$router->post("/notes", [AuthMiddleware::class, "authorizeUser"], [NoteController::class, "createNote"]);
+$router->get("/notes", $authMiddleware, [NoteController::class, "getNotes"]);
+
+$router->get("/notes/:id", $authMiddleware, [NoteController::class, "getNote"]);
+
+$router->post("/notes", $authMiddleware, [NoteController::class, "createNote"]);
+
+$router->delete("/notes/:id", $authMiddleware, [NoteController::class, "deleteNote"]);
 
 $router->get("/phpmyadmin", function ($request, $response) {
     return $response->redirect("http://localhost:2083");

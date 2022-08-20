@@ -41,7 +41,7 @@ class Note
     /**
      * @throws CustomException
      */
-    public static function findOne(int $id): stdClass
+    public static function findOne(int $id): bool|stdClass
     {
             if (!$id || !is_numeric($id)) {
                 throw new CustomException("Invalid note ID", 401);
@@ -56,7 +56,7 @@ class Note
     /**
      * @throws CustomException
      */
-    public static function findMany(int $user_id): array
+    public static function findMany(int $user_id): bool|array
     {
             if (!$user_id || !is_numeric($user_id)) {
                 throw new CustomException("Invalid user ID", 401);
@@ -66,5 +66,20 @@ class Note
                 "user_id" => $user_id
             ]);
             return $stmt->fetchAll();
+    }
+
+    /**
+     * @throws CustomException
+     */
+    public static function deleteOne(int $id): bool
+    {
+        if (!$id || !is_numeric($id)) {
+            throw new CustomException("Invalid note ID", 401);
+        }
+        $pdo = new Connection();
+        $stmt = $pdo->query_data("DELETE FROM `notes` WHERE id = :id", [
+            "id" => $id
+        ]);
+        return $stmt->rowCount();
     }
 }

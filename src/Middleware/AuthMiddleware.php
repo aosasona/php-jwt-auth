@@ -18,7 +18,7 @@ class AuthMiddleware {
             $auth_header = $headers["authorization"];
 
             if (empty($auth_header)) {
-                throw new CustomException("Missing access token!", 401);
+                throw new CustomException("Access token not provided", 401);
             }
 
             if(!str_starts_with($auth_header, "Bearer")) {

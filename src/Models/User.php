@@ -35,13 +35,13 @@ class User
             "email" => $this->email,
             "password" => $this->password
         ]);
-        return (object)$data;
+        return (object) $data;
     }
 
     /**
      * @throws CustomException
      */
-    public static function findOne(int $id): stdClass
+    public static function findOne(int $id): bool|stdClass
     {
         if (!$id || !is_numeric($id)) {
             throw new CustomException("Invalid user ID", 401);
@@ -56,7 +56,7 @@ class User
     /**
      * @throws CustomException
      */
-    public static function findByEmail(string $email)
+    public static function findByEmail(string $email): bool|stdClass
     {
         if (empty($email)) {
             throw new CustomException("Email is required!", 400);

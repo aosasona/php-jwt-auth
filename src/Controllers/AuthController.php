@@ -14,7 +14,8 @@ use Trulyao\PhpJwt\Services\AuthService as AuthService;
 class AuthController
 {
 
-    public function createUser(Request $request, Response $response): Response
+
+    public static function createUser(Request $request, Response $response): Response
     {
         try {
             extract($request->body());
@@ -41,9 +42,9 @@ class AuthController
 
             $email = strtolower($email);
 
-            $check = $this->pdo->query_data("SELECT * FROM `users` WHERE email = :email", ["email" => $email])->rowCount();
+            $user_exists = User::findByEmail($email);
 
-            if ($check > 0) {
+            if ($user_exists) {
                 throw new CustomException("Account already exists", 400);
             }
 
@@ -61,7 +62,7 @@ class AuthController
         }
     }
 
-    public function loginUser(Request $request, Response $response): Response
+    public static function loginUser(Request $request, Response $response): Response
     {
         try {
             extract($request->body());
@@ -72,19 +73,17 @@ class AuthController
 
             $email = strtolower($email);
 
-            $check = $this->pdo->query_data("SELECT * FROM `users` WHERE email = :email", ["email" => $email])->rowCount();
-
-            if ($check < 1) {
-                throw new CustomException("Invalid credentials!", 400);
-            }
-
             $user = User::findByEmail($email);
+
+            if (!$user) {
+                throw new CustomException("Account already exists", 400);
+            }
 
             if (!password_verify($password, $user->password)) {
                 throw new CustomException("Invalid credentials!", 400);
             }
 
-            $generatedJWT = AuthService::generateToken($user->id, $this->getUrl());
+            $generatedJWT = AuthService::generateToken($user->id, self::getUrl());
 
             $response_data = [
                 "email" => $user->email,
@@ -100,7 +99,7 @@ class AuthController
 
     }
 
-    protected function getUrl(): string
+    protected static function getUrl(): string
     {
         return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
     }
