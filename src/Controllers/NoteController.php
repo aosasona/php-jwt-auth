@@ -9,7 +9,8 @@ use Trulyao\PhpRouter\HTTP\Response as Response;
 use Trulyao\PhpRouter\HTTP\Request as Request;
 use Trulyao\PhpJwt\Utils\ResponseHandler as ResponseHandler;
 
-class NoteController {
+class NoteController
+{
 
     public static function createNote(Request $request, Response $response): Response
     {
@@ -28,7 +29,7 @@ class NoteController {
             $note->user_id = $user->id;
             $note->save();
 
-            return ResponseHandler::success($response, "Note created!",200, (array) $note);
+            return ResponseHandler::success($response, "Note created!", 200, (array)$note);
         } catch (CustomException|Exception $e) {
             return ResponseHandler::error($response, $e);
         }
@@ -43,15 +44,15 @@ class NoteController {
 
             $note = Note::findOne($note_id);
 
-            if(!$note) {
+            if (!$note) {
                 throw new CustomException("Uh... this note doesn't exist", 404);
             }
 
-            if($note->user_id != $user_id) {
+            if ($note->user_id != $user_id) {
                 throw new CustomException("You don't own this note chief!", 403);
             }
 
-            return ResponseHandler::success($response, "Note found!",200, (array) $note);
+            return ResponseHandler::success($response, "Note found!", 200, (array)$note);
         } catch (CustomException|Exception $e) {
             return ResponseHandler::error($response, $e);
         }
@@ -63,31 +64,31 @@ class NoteController {
             $user_id = $request->data["user"]->id;
             $notes = Note::findMany($user_id);
 
-            if(!$notes) {
+            if (!$notes) {
                 throw new CustomException("You don't have any notes chief", 404);
             }
 
-            return ResponseHandler::success($response, "Here you go!",200, $notes);
+            return ResponseHandler::success($response, "Here you go!", 200, $notes);
         } catch (CustomException|Exception $e) {
             return ResponseHandler::error($response, $e);
         }
     }
 
-    public static function deleteNote (Request $request, Response $response): Response
+    public static function deleteNote(Request $request, Response $response): Response
     {
         try {
             $note_id = $request->params("id");
             $user_id = $request->data["user"]->id;
             $note = Note::findOne($note_id);
-            if(!$note) {
+            if (!$note) {
                 throw new CustomException("Uh... this note doesn't exist", 404);
             }
-            if($note->user_id != $user_id) {
+            if ($note->user_id != $user_id) {
                 throw new CustomException("You don't own this note chief!", 403);
             }
             $delete = Note::deleteOne($note->id);
 
-            if(!$delete) {
+            if (!$delete) {
                 throw new CustomException("Something went wrong", 500);
             }
 

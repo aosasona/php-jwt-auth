@@ -32,7 +32,7 @@ class User
             "email" => $this->email,
             "password" => $this->password
         ]);
-        return (object) $data;
+        return (object)$data;
     }
 
     /**

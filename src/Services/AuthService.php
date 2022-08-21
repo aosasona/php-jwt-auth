@@ -6,7 +6,8 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Exception;
 
-class AuthService {
+class AuthService
+{
     public static function generateToken(int $id, string $url): array
     {
         $exp_multiplier = 60 * 60;
@@ -22,12 +23,12 @@ class AuthService {
 
         $key = $_ENV["JWT_SECRET"];
 
-        $ttl = $exp_multiplier/60;
+        $ttl = $exp_multiplier / 60;
 
         return ["token" => JWT::encode($payload, $key, 'HS256'), "ttl" => "{$ttl}m"];
     }
 
-    public static function decodeToken(string $token): object | null
+    public static function decodeToken(string $token): object|null
     {
         try {
             $key = $_ENV["JWT_SECRET"];
@@ -38,7 +39,7 @@ class AuthService {
 
     }
 
-    public static function getUserById(int $id): object | null
+    public static function getUserById(int $id): object|null
     {
         $pdo = new Connection();
         $stmt = $pdo->query_data("SELECT `id`, `name`, `email` FROM `users` WHERE id = :id", ["id" => $id]);

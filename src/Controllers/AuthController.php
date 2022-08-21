@@ -31,7 +31,7 @@ class AuthController
                 throw new CustomException("Full name is required!", 400);
             }
 
-            if(strlen($password) < 6) {
+            if (strlen($password) < 6) {
                 throw new CustomException("Password must be at least 6 characters long!", 400);
             }
 

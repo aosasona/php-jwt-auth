@@ -10,8 +10,10 @@ use Trulyao\PhpRouter\HTTP\Response as Response;
 use Trulyao\PhpRouter\HTTP\Request as Request;
 use Trulyao\PhpJwt\Services\AuthService as AuthService;
 
-class AuthMiddleware {
-    public static function authorizeUser(Request $request, Response $response): null| Response {
+class AuthMiddleware
+{
+    public static function authorizeUser(Request $request, Response $response): null|Response
+    {
         try {
             $headers = $request->headers();
             $auth_header = $headers["authorization"];
@@ -20,7 +22,7 @@ class AuthMiddleware {
                 throw new CustomException("Access token not provided", 401);
             }
 
-            if(!str_starts_with($auth_header, "Bearer")) {
+            if (!str_starts_with($auth_header, "Bearer")) {
                 throw new CustomException("Invalid access token", 400);
             }
 
@@ -34,13 +36,13 @@ class AuthMiddleware {
 
             $user_id = $decoded->data->user_id;
 
-            if(!$user_id || !is_numeric($user_id)) {
+            if (!$user_id || !is_numeric($user_id)) {
                 throw new CustomException("Invalid access token", 401);
             }
 
             $user = User::findOne($user_id);
 
-            if(!$user) {
+            if (!$user) {
                 throw new CustomException("Invalid access token", 401);
             }
 

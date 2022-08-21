@@ -32,7 +32,7 @@ class Note
             "user_id" => $this->user_id
         ];
         $pdo->query_data("INSERT INTO `notes` (`title`, `content`, `user_id`) VALUES (:title, :content, :user_id)", $data);
-        return (object) $data;
+        return (object)$data;
     }
 
     /**
@@ -40,14 +40,14 @@ class Note
      */
     public static function findOne(int $id): bool|stdClass
     {
-            if (!$id || !is_numeric($id)) {
-                throw new CustomException("Invalid note ID", 401);
-            }
-            $pdo = new Connection();
-            $stmt = $pdo->query_data("SELECT * FROM `notes` WHERE id = :id", [
-                "id" => $id,
-            ]);
-            return $stmt->fetch();
+        if (!$id || !is_numeric($id)) {
+            throw new CustomException("Invalid note ID", 401);
+        }
+        $pdo = new Connection();
+        $stmt = $pdo->query_data("SELECT * FROM `notes` WHERE id = :id", [
+            "id" => $id,
+        ]);
+        return $stmt->fetch();
     }
 
     /**
@@ -55,14 +55,14 @@ class Note
      */
     public static function findMany(int $user_id): bool|array
     {
-            if (!$user_id || !is_numeric($user_id)) {
-                throw new CustomException("Invalid user ID", 401);
-            }
-            $pdo = new Connection();
-            $stmt = $pdo->query_data("SELECT * FROM `notes` WHERE user_id = :user_id", [
-                "user_id" => $user_id
-            ]);
-            return $stmt->fetchAll();
+        if (!$user_id || !is_numeric($user_id)) {
+            throw new CustomException("Invalid user ID", 401);
+        }
+        $pdo = new Connection();
+        $stmt = $pdo->query_data("SELECT * FROM `notes` WHERE user_id = :user_id", [
+            "user_id" => $user_id
+        ]);
+        return $stmt->fetchAll();
     }
 
     /**
