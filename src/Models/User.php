@@ -16,7 +16,7 @@ class User
     /**
      * @throws CustomException
      */
-    public function save(): stdClass
+    public function save(): stdClass|null
     {
         if (empty($this->name) || empty($this->email) || empty($this->password)) {
             throw new CustomException("All fields are required!", 400);
@@ -27,12 +27,17 @@ class User
             "email" => $this->email,
             "password" => $this->password
         ];
-        $pdo->query_data("INSERT INTO `users` (`name`, `email`, `password`) VALUES (:name, :email, :password)", [
+        $stmt = $pdo->query_data("INSERT INTO `users` (`name`, `email`, `password`) VALUES (:name, :email, :password)", [
             "name" => $this->name,
             "email" => $this->email,
             "password" => $this->password
         ]);
-        return (object)$data;
+        $affected_rows = $stmt->rowCount();
+        if ($affected_rows > 0) {
+            return (object)$data;
+        } else {
+            throw new CustomException("Something went wrong", 500);
+        }
     }
 
     /**

@@ -15,7 +15,7 @@ class Note
     /**
      * @throws CustomException
      */
-    public function save(): stdClass
+    public function save(): stdClass|null
     {
         if (empty($this->title) || empty($this->content)) {
             throw new CustomException("All fields are required!", 400);
@@ -31,8 +31,13 @@ class Note
             "content" => $this->content,
             "user_id" => $this->user_id
         ];
-        $pdo->query_data("INSERT INTO `notes` (`title`, `content`, `user_id`) VALUES (:title, :content, :user_id)", $data);
-        return (object)$data;
+        $stmt = $pdo->query_data("INSERT INTO `notes` (`title`, `content`, `user_id`) VALUES (:title, :content, :user_id)", $data);
+        $affected_rows = $stmt->rowCount();
+        if ($affected_rows > 0) {
+            return (object)$data;
+        } else {
+            throw new CustomException("Something went wrong", 500);
+        }
     }
 
     /**
