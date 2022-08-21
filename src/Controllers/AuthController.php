@@ -5,6 +5,7 @@ namespace Trulyao\PhpJwt\Controllers;
 use Exception;
 use Trulyao\PhpJwt\Models\User;
 use Trulyao\PhpJwt\Utils\CustomException;
+use Trulyao\PhpJwt\Utils\InputHandler;
 use Trulyao\PhpJwt\Utils\ResponseHandler as ResponseHandler;
 use Trulyao\PhpRouter\HTTP\Response as Response;
 use Trulyao\PhpRouter\HTTP\Request as Request;
@@ -22,7 +23,10 @@ class AuthController
             if (empty($full_name) || empty($email) || empty($password) || empty($confirm_password)) {
                 throw new CustomException("Please fill all the fields", 400);
             }
-
+            $full_name = InputHandler::normalizeString($full_name);
+            $email = InputHandler::normalizeString($email);
+            $password = InputHandler::normalizeString($password);
+            $confirm_password = InputHandler::normalizeString($confirm_password);
             $name = explode(" ", $full_name);
 
             [$first_name, $last_name] = $name + [null, null];
@@ -71,6 +75,8 @@ class AuthController
             }
 
             $email = strtolower($email);
+            $email = InputHandler::normalizeString($email);
+            $password = InputHandler::normalizeString($password);
 
             $user = User::findByEmail($email);
 

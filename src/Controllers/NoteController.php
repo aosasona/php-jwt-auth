@@ -3,8 +3,10 @@
 namespace Trulyao\PhpJwt\Controllers;
 
 use Exception;
+use stdClass;
 use Trulyao\PhpJwt\Models\Note;
 use Trulyao\PhpJwt\Utils\CustomException;
+use Trulyao\PhpJwt\Utils\InputHandler;
 use Trulyao\PhpRouter\HTTP\Response as Response;
 use Trulyao\PhpRouter\HTTP\Request as Request;
 use Trulyao\PhpJwt\Utils\ResponseHandler as ResponseHandler;
@@ -23,6 +25,9 @@ class NoteController
                 throw new CustomException("All fields are required!", 400);
             }
 
+            $title = InputHandler::normalizeString($title);
+            $content = InputHandler::normalizeString($content);
+
             $note = new Note();
             $note->title = $title;
             $note->content = $content;
@@ -39,18 +44,7 @@ class NoteController
     {
         try {
 
-            $note_id = $request->params("id");
-            $user_id = $request->data["user"]->id;
-
-            $note = Note::findOne($note_id);
-
-            if (!$note) {
-                throw new CustomException("Uh... this note doesn't exist", 404);
-            }
-
-            if ($note->user_id != $user_id) {
-                throw new CustomException("You don't own this note chief!", 403);
-            }
+            $note = self::getStdClass($request);
 
             return ResponseHandler::success($response, "Note found!", 200, (array)$note);
         } catch (CustomException|Exception $e) {
@@ -62,6 +56,7 @@ class NoteController
     {
         try {
             $user_id = $request->data["user"]->id;
+
             $notes = Note::findMany($user_id);
 
             if (!$notes) {
@@ -77,15 +72,7 @@ class NoteController
     public static function deleteNote(Request $request, Response $response): Response
     {
         try {
-            $note_id = $request->params("id");
-            $user_id = $request->data["user"]->id;
-            $note = Note::findOne($note_id);
-            if (!$note) {
-                throw new CustomException("Uh... this note doesn't exist", 404);
-            }
-            if ($note->user_id != $user_id) {
-                throw new CustomException("You don't own this note chief!", 403);
-            }
+            $note = self::getStdClass($request);
             $delete = Note::deleteOne($note->id);
 
             if (!$delete) {
@@ -96,5 +83,31 @@ class NoteController
         } catch (CustomException|Exception $e) {
             return ResponseHandler::error($response, $e);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return bool|stdClass
+     * @throws CustomException
+     */
+    public static function getStdClass(Request $request): stdClass|bool
+    {
+        $note_id = $request->params("id");
+        $user_id = $request->data["user"]->id;
+
+        $_note_id = (int)$note_id;
+
+        if (empty($_note_id)) {
+            throw new CustomException("Note ID is required!", 400);
+        }
+
+        $note = Note::findOne($note_id);
+        if (!$note) {
+            throw new CustomException("Uh... this note doesn't exist", 404);
+        }
+        if ($note->user_id != $user_id) {
+            throw new CustomException("You don't own this note chief!", 403);
+        }
+        return $note;
     }
 }
